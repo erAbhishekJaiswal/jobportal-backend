@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const port = 4000;
 const cors = require('cors');
+// import visitorRoutes from './routes/visitorRoutes.js';
+const visitorRoutes = require('./routes/visitorRoutes');
 
 app.use(cors());
 const connectDB = require('./config/db');
@@ -14,6 +16,7 @@ app.get('/', (req, res) => {
   res.send('Hello from the backend!');
 });
 
+app.use("/api/visitors", visitorRoutes);
 app.use('/api/users', require('./routes/userRoute'));
 app.use('/api/jobs', require('./routes/jobRoute'));
 app.use('/api/companies', require('./routes/companyRoute'));
