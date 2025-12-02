@@ -1,37 +1,3 @@
-// const express = require("express");
-// const upload = require("../utills/multer");
-// const {
-//   submitApplication,
-//   getAllApplications,
-//   getApplicationsByJob,
-// } = require("../controllers/applicationController");
-// const fileUpload = require("express-fileupload");
-
-// const router = express.Router();
-
-// router.use(fileUpload({
-//   useTempFiles: true,
-//   tempFileDir: "/tmp"
-// }));
-
-// // Routes
-// router.post("/", submitApplication);
-// router.get("/", getAllApplications);
-// router.get("/:jobId", getApplicationsByJob);
-
-// module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
 const express = require("express");
 const {
   submitApplication,
@@ -45,7 +11,7 @@ const {
   getDetailsOfApplication
 } = require("../controllers/applicationController");
 const fileUpload = require("express-fileupload");
-
+const {protect} = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.use(fileUpload({
@@ -58,14 +24,14 @@ router.use(fileUpload({
 
 // Routes
 router.post("/", submitApplication);
-router.get("/email/:email", getApplicationsByUser);
-router.get("/:id", getDetailsOfApplication);
-router.get("/pdf/:publicId", getSignedResumePdfLink);
-router.get("/", getAllApplications);
-router.delete("/deleteall", deleteAllApplications);
-router.get("/job/:jobId", getApplicationsByJob);
-router.put("/:id/status", updateApplicationStatus);
-router.delete("/:id", deleteApplication);
+router.get("/email/:email", protect, getApplicationsByUser);
+router.get("/:id", protect, getDetailsOfApplication);
+router.get("/pdf/:publicId", protect, getSignedResumePdfLink);
+router.get("/", protect, getAllApplications);
+router.delete("/deleteall", protect, deleteAllApplications);
+router.get("/job/:jobId", protect, getApplicationsByJob);
+router.put("/:id/status", protect, updateApplicationStatus);
+router.delete("/:id", protect, deleteApplication);
 
 
 module.exports = router;

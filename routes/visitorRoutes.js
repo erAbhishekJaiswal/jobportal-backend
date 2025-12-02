@@ -1,7 +1,7 @@
 const express = require("express");
 const Visitor = require("../models/Visitor");
 const requestIp = require("request-ip");
-
+const { protect } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.post("/count", async (req, res) => {
@@ -76,7 +76,7 @@ router.get("/view/count", async (req, res) => {
 });
 
 
-router.get("/report", async (req, res) => {
+router.get("/report", protect, async (req, res) => {
   try {
     const data = await Visitor.find().sort({ date: -1 });
     res.json(data);
@@ -85,7 +85,7 @@ router.get("/report", async (req, res) => {
   }
 });
 
-router.delete("/reset", async (req, res) => {
+router.delete("/reset", protect, async (req, res) => {
   try {
     await Visitor.deleteMany({});
     res.json({ message: "Visitors reset successfully" });
@@ -95,6 +95,6 @@ router.delete("/reset", async (req, res) => {
 });
 
 
-// 🔥 FIX: USE COMMONJS EXPORT
+
 module.exports = router;
 
